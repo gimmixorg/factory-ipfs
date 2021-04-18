@@ -43,8 +43,8 @@ polka()
     return res.json({ hash: data.path });
   })
   .post('/uploadJSON', async (req, res) => {
-    const data = req.body;
-    const { cid } = await node.add(JSON.stringify(data));
-    return res.json({ hash: cid });
+    const body = req.body;
+    const data = await node.add(JSON.stringify(body));
+    return res.json({ hash: data.path });
   })
   .listen(3000);
