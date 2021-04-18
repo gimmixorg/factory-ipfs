@@ -1,0 +1,3 @@
+ipfs.gimmix.org {
+  reverse_proxy localhost:3000
+}
