@@ -9,6 +9,7 @@
   "dependencies": {
     "@polka/send-type": "^0.5.2",
     "cors": "^2.8.5",
+    "express-fileupload": "^1.2.1",
     "ipfs": "^0.54.4",
     "polka": "^0.5.2"
   },
