@@ -1,7 +1,6 @@
 import IPFS from 'ipfs';
 import polka from 'polka';
 import fileUpload from 'express-fileupload';
-import cors from 'cors';
 
 let node;
 IPFS.create().then(_node => {
@@ -9,12 +8,13 @@ IPFS.create().then(_node => {
 });
 
 polka()
-  .use(cors(), fileUpload())
+  .use(fileUpload())
   .use((_req, res, next) => {
     res.json = data => {
       res.setHeader('Content-Type', 'application/json');
       res.end(JSON.stringify(data));
     };
+    res.setHeader('Access-Control-Allow-Origin', '*');
     next();
   })
   .get('/ipfs/:hash', async (req, res) => {
