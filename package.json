@@ -2,20 +2,19 @@
   "name": "@gimmixfactory/ipfs",
   "version": "0.1.0",
   "scripts": {
-    "dev": "nodemon index.js",
-    "start": "node index.js"
+    "dev": "PORT=4001 nodemon index.js",
+    "start": "forever start index.js",
+    "stop": "forever stop 0"
   },
-  "type": "module",
   "dependencies": {
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express-fileupload": "^1.2.1",
     "ipfs": "^0.54.4",
-    "node-fetch": "^2.6.1",
-    "polka": "^0.5.2",
-    "unzipper": "^0.10.11"
+    "polka": "^0.5.2"
   },
   "devDependencies": {
+    "forever": "^3.0.4",
     "nodemon": "^2.0.7"
   }
 }
