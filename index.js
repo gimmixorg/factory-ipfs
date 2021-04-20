@@ -55,7 +55,7 @@ polka()
       results.push(result);
     }
     return res.json({
-      url: `ipfs:///ipfs/${results[results.length - 1].cid}/index.html`
+      url: `ipfs:///ipfs/${results[results.length - 1].cid}/`
     });
   })
   .listen(3000);
