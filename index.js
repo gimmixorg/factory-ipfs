@@ -2,6 +2,7 @@ const IPFS = require('ipfs');
 const polka = require('polka');
 const fileUpload = require('express-fileupload');
 const bodyparser = require('body-parser');
+const cors = require('cors');
 
 let node;
 IPFS.create().then(_node => {
@@ -9,7 +10,7 @@ IPFS.create().then(_node => {
 });
 
 polka()
-  .use(fileUpload(), bodyparser.json())
+  .use(cors(), fileUpload(), bodyparser.json())
   .use((_req, res, next) => {
     res.json = data => {
       res.setHeader('Content-Type', 'application/json');
