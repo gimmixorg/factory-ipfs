@@ -3,6 +3,8 @@ import polka from 'polka';
 import fileUpload from 'express-fileupload';
 import bodyparser from 'body-parser';
 import cors from 'cors';
+import unzipper from 'unzipper';
+import fetch from 'node-fetch';
 
 let node;
 IPFS.create().then(_node => {
@@ -27,17 +29,6 @@ polka()
     );
     next();
   })
-  .get('/ipfs/:hash', async (req, res) => {
-    const cid = req.params.hash;
-    for await (const file of node.get(cid)) {
-      if (!file.content) continue;
-      const content = [];
-      for await (const chunk of file.content) {
-        content.push(chunk);
-      }
-      res.end(content[0]);
-    }
-  })
   .post('/upload', async (req, res) => {
     const data = await node.add(req.files.files.data);
     return res.json({ hash: data.path });
@@ -46,5 +37,25 @@ polka()
     const body = req.body;
     const data = await node.add(JSON.stringify(body));
     return res.json({ hash: data.path });
+  })
+  .get('/uploadSite', async (req, res) => {
+    const { buildURL } = req.query;
+    const buffer = await fetch(buildURL).then(res => res.buffer());
+    const directory = await unzipper.Open.buffer(buffer);
+    const files = await Promise.all(
+      directory.files.map(async file => {
+        return {
+          path: file.path.replace('out/', 'site/'),
+          content: await file.buffer()
+        };
+      })
+    );
+    const results = [];
+    for await (const result of node.addAll(files)) {
+      results.push(result);
+    }
+    return res.json({
+      url: `ipfs:///ipfs/${results[results.length - 1].cid}/index.html`
+    });
   })
   .listen(3000);
