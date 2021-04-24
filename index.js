@@ -3,9 +3,12 @@ const polka = require('polka');
 const fileUpload = require('express-fileupload');
 const bodyparser = require('body-parser');
 const cors = require('cors');
+const path = require('path');
+
+const repoPath = path.resolve('./.ipfs');
 
 let node;
-IPFS.create().then(_node => {
+IPFS.create({ repo: repoPath }).then(_node => {
   node = _node;
 });
 
